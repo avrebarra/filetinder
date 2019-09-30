@@ -3,8 +3,8 @@ package shell
 import "os/exec"
 
 // ExecInBackground execute shell command and leave it running in background
-func ExecInBackground(cmdstr string) error {
-	cmd := exec.Command(cmdstr)
+func ExecInBackground(path string, args ...string) error {
+	cmd := exec.Command(path, args...)
 
 	if err := cmd.Start(); err != nil {
 		return err
