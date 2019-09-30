@@ -25,11 +25,16 @@ func main() {
 		shell.ExecInBackground("./dirtinder kickserver")
 
 		fmt.Println("Dirtinder started!")
-		fmt.Printf("Open your http://localhost:%s to start choosing files", appconf.Port)
+		fmt.Printf("Open your http://localhost:%d to start choosing files", appconf.Port)
 		break
 
 	case "kickserver":
-		server.Start()
+		fmt.Println("Running dirtinder server...")
+		if err := server.Start(); err != nil {
+			fmt.Println("Error starting dirtinder server!")
+			panic(err)
+		}
+
 		break
 
 	case "add":

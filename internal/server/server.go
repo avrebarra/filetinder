@@ -8,17 +8,12 @@ import (
 )
 
 // Start starts dirtinder main HTTP server
-func Start() {
+func Start() error {
 	appconf := config.GetConfigs()
 
 	// http.HandleFunc("/api/targets", nil)
 	// http.HandleFunc("/api/perform", nil)
 	http.HandleFunc("/api/meta", metaHandler)
 
-	err := http.ListenAndServe(fmt.Sprintf(":%d", appconf.Port), nil)
-	if err != nil {
-		panic(err)
-	} else {
-	}
-
+	return http.ListenAndServe(fmt.Sprintf(":%d", appconf.Port), nil)
 }
