@@ -22,7 +22,11 @@ func main() {
 	case "start":
 		appconf := config.GetConfigs()
 
-		shell.ExecInBackground("./filetinder kickserver")
+		err := shell.ExecInBackground("./filetinder kickserver")
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
 
 		fmt.Println("FileTinder started!")
 		fmt.Printf("Open your http://localhost:%d to start choosing files", appconf.Port)
@@ -31,8 +35,8 @@ func main() {
 	case "kickserver":
 		fmt.Println("Running FileTinder server...")
 		if err := server.Start(); err != nil {
-			fmt.Println("Error starting FileTinder server!")
-			panic(err)
+			fmt.Println("Error:", err)
+			return
 		}
 
 		break
