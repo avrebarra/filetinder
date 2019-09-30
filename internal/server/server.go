@@ -12,7 +12,7 @@ import (
 func Start() error {
 	appconf := config.GetConfigs()
 
-	// http.HandleFunc("/api/targets", nil)
+	http.HandleFunc("/api/targets", handlers.HandleAPITarget)
 	// http.HandleFunc("/api/perform", nil)
 	http.HandleFunc("/api/meta", handlers.HandleAPIMeta)
 
