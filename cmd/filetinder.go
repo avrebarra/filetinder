@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/shrotavre/filetinder/internal/config"
 	"github.com/shrotavre/filetinder/internal/server"
@@ -10,19 +12,23 @@ import (
 )
 
 func main() {
+	var subcommand string
+
 	rawArgs := os.Args
-	if len(rawArgs) < 2 {
-		fmt.Println("Command not supplied! To start FileTinder run 'filetinder start'.")
-		return
+	if len(rawArgs) >= 2 {
+		subcommand = rawArgs[1]
 	}
 
-	subcommand := rawArgs[1]
+	binpath, err := filepath.Abs(os.Args[0])
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	switch subcommand {
 	case "start":
 		appconf := config.GetConfigs()
 
-		err := shell.ExecInBackground("./filetinder kickserver")
+		err := shell.ExecInBackground(binpath, "kickserver")
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
@@ -36,9 +42,8 @@ func main() {
 		fmt.Println("Running FileTinder server...")
 		if err := server.Start(); err != nil {
 			fmt.Println("Error:", err)
-			return
+			os.Exit(2)
 		}
-
 		break
 
 	case "add":
@@ -51,6 +56,6 @@ func main() {
 		break
 
 	default:
-		fmt.Println("Command unknown!")
+		fmt.Println("Command unknown! To start FileTinder run 'filetinder start'.")
 	}
 }
