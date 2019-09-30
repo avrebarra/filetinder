@@ -13,7 +13,7 @@ func Start() {
 
 	// http.HandleFunc("/api/targets", nil)
 	// http.HandleFunc("/api/perform", nil)
-	// http.HandleFunc("/api/meta", nil)
+	http.HandleFunc("/api/meta", metaHandler)
 
 	err := http.ListenAndServe(fmt.Sprintf(":%d", appconf.Port), nil)
 	if err != nil {
