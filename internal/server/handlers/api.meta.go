@@ -1,4 +1,4 @@
-package server
+package handlers
 
 import (
 	"encoding/json"
@@ -22,7 +22,8 @@ func init() {
 	appmeta.PID = os.Getpid()
 }
 
-func metaHandler(w http.ResponseWriter, r *http.Request) {
+// HandleAPIMeta handler function for '/api/meta' endpoints
+func HandleAPIMeta(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		j, _ := json.Marshal(appmeta)

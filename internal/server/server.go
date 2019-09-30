@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/shrotavre/filetinder/internal/config"
+	"github.com/shrotavre/filetinder/internal/server/handlers"
 )
 
 // Start starts FileTinder main HTTP server
@@ -13,7 +14,7 @@ func Start() error {
 
 	// http.HandleFunc("/api/targets", nil)
 	// http.HandleFunc("/api/perform", nil)
-	http.HandleFunc("/api/meta", metaHandler)
+	http.HandleFunc("/api/meta", handlers.HandleAPIMeta)
 
 	return http.ListenAndServe(fmt.Sprintf(":%d", appconf.Port), nil)
 }
