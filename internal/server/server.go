@@ -7,7 +7,7 @@ import (
 	"github.com/shrotavre/filetinder/internal/config"
 )
 
-// Start starts dirtinder main HTTP server
+// Start starts FileTinder main HTTP server
 func Start() error {
 	appconf := config.GetConfigs()
 

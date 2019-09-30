@@ -12,7 +12,7 @@ import (
 func main() {
 	rawArgs := os.Args
 	if len(rawArgs) < 2 {
-		fmt.Println("Command not supplied! To start dirtinder run 'dirtinder start'.")
+		fmt.Println("Command not supplied! To start FileTinder run 'filetinder start'.")
 		return
 	}
 
@@ -22,16 +22,16 @@ func main() {
 	case "start":
 		appconf := config.GetConfigs()
 
-		shell.ExecInBackground("./dirtinder kickserver")
+		shell.ExecInBackground("./filetinder kickserver")
 
-		fmt.Println("Dirtinder started!")
+		fmt.Println("FileTinder started!")
 		fmt.Printf("Open your http://localhost:%d to start choosing files", appconf.Port)
 		break
 
 	case "kickserver":
-		fmt.Println("Running dirtinder server...")
+		fmt.Println("Running FileTinder server...")
 		if err := server.Start(); err != nil {
-			fmt.Println("Error starting dirtinder server!")
+			fmt.Println("Error starting FileTinder server!")
 			panic(err)
 		}
 
