@@ -26,7 +26,7 @@ func main() {
 
 	switch subcommand {
 	case "start":
-		appconf := config.GetConfigs()
+		port := config.DefaultPort
 
 		err := shell.ExecInBackground(binpath, "kickserver")
 		if err != nil {
@@ -35,7 +35,7 @@ func main() {
 		}
 
 		fmt.Println("FileTinder started!")
-		fmt.Printf("Open your http://localhost:%d to start choosing files", appconf.Port)
+		fmt.Printf("Open your http://localhost:%d to start choosing files", port)
 		break
 
 	case "kickserver":

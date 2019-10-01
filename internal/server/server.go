@@ -10,11 +10,11 @@ import (
 
 // Start starts FileTinder main HTTP server
 func Start() error {
-	appconf := config.GetConfigs()
+	port := config.DefaultPort
 
 	http.HandleFunc("/api/targets", handlers.HandleAPITarget)
 	// http.HandleFunc("/api/perform", nil)
 	http.HandleFunc("/api/meta", handlers.HandleAPIMeta)
 
-	return http.ListenAndServe(fmt.Sprintf(":%d", appconf.Port), nil)
+	return http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 }

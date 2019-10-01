@@ -16,9 +16,7 @@ type meta struct {
 var appmeta meta
 
 func init() {
-	appconf := config.GetConfigs()
-
-	appmeta.Port = appconf.Port
+	appmeta.Port = config.DefaultPort
 	appmeta.PID = os.Getpid()
 }
 
