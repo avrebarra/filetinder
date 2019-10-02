@@ -3,10 +3,9 @@ package server
 import (
 	"fmt"
 
-	"github.com/shrotavre/filetinder/internal/server/handlers"
-
 	"github.com/gin-gonic/gin"
 	"github.com/shrotavre/filetinder/internal/config"
+	"github.com/shrotavre/filetinder/internal/server/handlers"
 )
 
 func setupRouter() *gin.Engine {
@@ -18,7 +17,7 @@ func setupRouter() *gin.Engine {
 		apis.GET("targets", handlers.GetTargets)
 		apis.POST("targets", handlers.AddTarget)
 		apis.GET("targets/:id", handlers.GetTarget)
-		apis.POST("targets/:id/mark", nil)
+		apis.POST("targets/:id/mark", handlers.MarkTarget)
 
 		// Funcs
 		apis.POST("/funcs/delete-all", nil)

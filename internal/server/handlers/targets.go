@@ -14,7 +14,8 @@ type (
 		URL string `json:"url" form:"url"`
 		Tag string `json:"tag"`
 	}
-	targets []target
+
+	targets []*target
 )
 
 var (
@@ -23,8 +24,18 @@ var (
 )
 
 func init() {
-	targetStore = make([]target, 0)
+	targetStore = make([]*target, 0)
 	targetIDIncrement = 1
+}
+
+func findTargetByID(id int64) *target {
+	for _, value := range targetStore {
+		if value.ID == int64(id) {
+			return value
+		}
+	}
+
+	return nil
 }
 
 // GetTargets return gin handler to get stored targets
@@ -36,15 +47,13 @@ func GetTargets(c *gin.Context) {
 func GetTarget(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	for _, value := range targetStore {
-		if value.ID == int64(id) {
-			c.JSON(http.StatusOK, value)
-			return
-		}
+	t := findTargetByID(int64(id))
+	if t != nil {
+		c.JSON(http.StatusOK, t)
+		return
 	}
 
 	c.Status(http.StatusNotFound)
-	return
 }
 
 // AddTarget return gin handler to add target
@@ -62,8 +71,23 @@ func AddTarget(c *gin.Context) {
 	t.ID = targetIDIncrement
 
 	// Add to store
-	targetStore = append(targetStore, t)
+	targetStore = append(targetStore, &t)
 	targetIDIncrement++
 
 	c.JSON(http.StatusOK, targetStore)
+}
+
+// MarkTarget return gin handler to mark target
+func MarkTarget(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	t := findTargetByID(int64(id))
+	if t != nil {
+		t.Tag = "marked"
+
+		c.JSON(http.StatusOK, t)
+		return
+	}
+
+	c.Status(http.StatusNotFound)
 }
