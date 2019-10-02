@@ -1,14 +1,11 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"log"
-	"net/http"
 	"os"
 	"path/filepath"
 
+	"github.com/imroc/req"
 	"github.com/shrotavre/filetinder/internal/config"
 	"github.com/shrotavre/filetinder/internal/server"
 	"github.com/shrotavre/filetinder/internal/shell"
@@ -30,13 +27,12 @@ func main() {
 	case "start":
 		binpath, err := filepath.Abs(os.Args[0])
 		if err != nil {
-			log.Fatal(err)
+			handleErrorAndExit(err)
 		}
 
 		err = shell.ExecInBackground(binpath, "kickserver")
 		if err != nil {
-			fmt.Println("Error:", err)
-			return
+			handleErrorAndExit(err)
 		}
 
 		fmt.Println("FileTinder started!")
@@ -46,31 +42,24 @@ func main() {
 	case "kickserver":
 		fmt.Println("Running FileTinder server...")
 		if err := server.Start(); err != nil {
-			fmt.Println("Error:", err)
-			os.Exit(2)
+			handleErrorAndExit(err)
 		}
 		break
 
 	case "add":
 		targetPath, err := filepath.Abs(os.Args[2])
 		if err != nil {
-			fmt.Println("Error:", err)
-			return
+			handleErrorAndExit(err)
 		}
 
-		message := map[string]interface{}{
+		url := fmt.Sprintf("http://localhost:%d/api/targets", config.DefaultPort)
+		payload := req.Param{
 			"url": targetPath,
 		}
 
-		bytePayload, err := json.Marshal(message)
+		_, err = req.Post(url, req.Header{"Accept": "application/json"}, req.BodyJSON(payload))
 		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
-
-		_, err = http.Post(fmt.Sprintf("http://localhost:%d/api/targets", config.DefaultPort), "application/json", bytes.NewBuffer(bytePayload))
-		if err != nil {
-			log.Fatalln(err)
+			handleErrorAndExit(err)
 		}
 
 		fmt.Println("Added to FileTinder:", targetPath)
@@ -88,4 +77,9 @@ func main() {
 	default:
 		fmt.Println("Command unknown! To start FileTinder run 'filetinder start'.")
 	}
+}
+
+func handleErrorAndExit(err error) {
+	fmt.Println("Error:", err)
+	os.Exit(2)
 }
