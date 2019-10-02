@@ -2,19 +2,39 @@ package server
 
 import (
 	"fmt"
-	"net/http"
 
-	"github.com/shrotavre/filetinder/internal/config"
 	"github.com/shrotavre/filetinder/internal/server/handlers"
+
+	"github.com/gin-gonic/gin"
+	"github.com/shrotavre/filetinder/internal/config"
 )
+
+func setupRouter() *gin.Engine {
+	r := gin.Default()
+
+	apis := r.Group("/api")
+	{
+		// Targets
+		apis.GET("targets", handlers.GetTargets)
+		apis.POST("targets", handlers.AddTarget)
+		apis.GET("targets/:id", handlers.GetTarget)
+		apis.POST("targets/:id/mark", nil)
+
+		// Funcs
+		apis.POST("/funcs/delete-all", nil)
+
+		// Meta
+		apis.GET("/meta", handlers.GetMeta)
+	}
+
+	return r
+}
 
 // Start starts FileTinder main HTTP server
 func Start() error {
 	port := config.DefaultPort
 
-	http.HandleFunc("/api/targets", handlers.HandleAPITarget)
-	// http.HandleFunc("/api/perform", nil)
-	http.HandleFunc("/api/meta", handlers.HandleAPIMeta)
+	r := setupRouter()
 
-	return http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	return r.Run(fmt.Sprintf(":%d", port))
 }
