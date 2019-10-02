@@ -49,18 +49,22 @@ func GetTarget(c *gin.Context) {
 
 // AddTarget return gin handler to add target
 func AddTarget(c *gin.Context) {
-	var t filetinder.Target
+	var requestBody struct {
+		URL string `json:"url"`
+	}
 
-	err := c.BindJSON(&t)
+	err := c.BindJSON(&requestBody)
 	if err != nil {
 		log.Panic(err)
 		c.Status(http.StatusBadRequest)
 		return
 	}
 
-	// Set default value
-	t.ID = targetIDIncrement
-	t.Tags = make([]string, 0)
+	t := filetinder.Target{
+		ID:   targetIDIncrement,
+		URL:  requestBody.URL,
+		Tags: make([]string, 0),
+	}
 
 	// Add to store
 	targetStore = append(targetStore, &t)
