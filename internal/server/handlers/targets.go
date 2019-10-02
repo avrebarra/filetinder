@@ -6,29 +6,20 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-)
-
-type (
-	target struct {
-		ID  int64  `json:"id"`
-		URL string `json:"url" form:"url"`
-		Tag string `json:"tag"`
-	}
-
-	targets []*target
+	"github.com/shrotavre/filetinder/internal/filetinder"
 )
 
 var (
-	targetStore       targets
+	targetStore       filetinder.TargetsCollection
 	targetIDIncrement int64
 )
 
 func init() {
-	targetStore = make([]*target, 0)
+	targetStore = make([]*filetinder.Target, 0)
 	targetIDIncrement = 1
 }
 
-func findTargetByID(id int64) *target {
+func findTargetByID(id int64) *filetinder.Target {
 	for _, value := range targetStore {
 		if value.ID == int64(id) {
 			return value
@@ -58,7 +49,7 @@ func GetTarget(c *gin.Context) {
 
 // AddTarget return gin handler to add target
 func AddTarget(c *gin.Context) {
-	var t target
+	var t filetinder.Target
 
 	err := c.BindJSON(&t)
 	if err != nil {

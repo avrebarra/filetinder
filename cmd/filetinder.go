@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/shrotavre/filetinder/internal/filetinder"
+
 	"github.com/imroc/req"
 	"github.com/shrotavre/filetinder/internal/config"
 	"github.com/shrotavre/filetinder/internal/server"
@@ -69,6 +71,20 @@ func main() {
 		break
 
 	case "list":
+		url := fmt.Sprintf("http://localhost:%d/api/targets", config.DefaultPort)
+		r, err := req.Get(url, req.Header{"Accept": "application/json"})
+		if err != nil {
+			handleErrorAndExit(err)
+		}
+
+		var ts filetinder.TargetsCollection
+		r.ToJSON(&ts)
+
+		fmt.Println("List of included files:")
+		for i, t := range ts {
+			fmt.Printf("(%d) id:%d %s\n", i+1, t.ID, t.URL)
+		}
+
 		break
 
 	case "stop":
