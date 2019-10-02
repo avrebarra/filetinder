@@ -82,7 +82,12 @@ func main() {
 
 		fmt.Println("List of included files:")
 		for i, t := range ts {
-			fmt.Printf("(%d) id:%d %s\n", i+1, t.ID, t.URL)
+			fmt.Printf("(%d) id:%d : %s", i+1, t.ID, t.URL)
+			if len(t.Tags) > 0 {
+				fmt.Print(" tagged: ", t.Tags)
+			}
+
+			fmt.Println()
 		}
 
 		break
