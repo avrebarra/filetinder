@@ -60,6 +60,7 @@ func AddTarget(c *gin.Context) {
 
 	// Set default value
 	t.ID = targetIDIncrement
+	t.Tags = make([]string, 0)
 
 	// Add to store
 	targetStore = append(targetStore, &t)
@@ -74,8 +75,7 @@ func MarkTarget(c *gin.Context) {
 
 	t := findTargetByID(int64(id))
 	if t != nil {
-		t.Tag = "marked"
-
+		t.Tags = append(t.Tags, "marked")
 		c.JSON(http.StatusOK, t)
 		return
 	}
