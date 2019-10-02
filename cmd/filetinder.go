@@ -11,19 +11,26 @@ import (
 	"github.com/shrotavre/filetinder/internal/shell"
 )
 
-func main() {
-	var subcommand string
+var (
+	subcommand string
+	binpath    string
+)
 
+func init() {
 	rawArgs := os.Args
 	if len(rawArgs) >= 2 {
 		subcommand = rawArgs[1]
 	}
 
-	binpath, err := filepath.Abs(os.Args[0])
+	v, err := filepath.Abs(os.Args[0])
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	binpath = v
+}
+
+func main() {
 	switch subcommand {
 	case "start":
 		port := config.DefaultPort
