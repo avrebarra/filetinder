@@ -1,0 +1,24 @@
+@protocol = http://
+@hostname = localhost
+@port = 17763
+@baseURL = {{protocol}}{{hostname}}:{{port}}
+
+## Add Targets
+POST {{baseURL}}/api/targets HTTP/1.1
+content-type: application/json
+
+{
+    "url": "cmd/filetinder.go.blok"
+}
+
+### Get Targets
+GET {{baseURL}}/api/targets HTTP/1.1
+content-type: application/json
+
+### Get Single Target
+GET {{baseURL}}/api/targets/3 HTTP/1.1
+content-type: application/json
+
+### Get FileTinder server meta
+GET {{baseURL}}/api/meta HTTP/1.1
+content-type: application/json
