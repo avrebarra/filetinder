@@ -79,6 +79,9 @@ func main() {
 	case "remove":
 		break
 
+	case "list":
+		break
+
 	case "stop":
 		break
 
