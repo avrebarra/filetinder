@@ -66,7 +66,7 @@ func AddTarget(c *gin.Context) {
 	targetStore = append(targetStore, &t)
 	targetIDIncrement++
 
-	c.JSON(http.StatusOK, targetStore)
+	c.JSON(http.StatusOK, t)
 }
 
 // MarkTarget return gin handler to mark target
