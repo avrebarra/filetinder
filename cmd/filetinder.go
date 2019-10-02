@@ -13,7 +13,6 @@ import (
 
 var (
 	subcommand string
-	binpath    string
 )
 
 func init() {
@@ -21,28 +20,24 @@ func init() {
 	if len(rawArgs) >= 2 {
 		subcommand = rawArgs[1]
 	}
-
-	v, err := filepath.Abs(os.Args[0])
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	binpath = v
 }
 
 func main() {
 	switch subcommand {
 	case "start":
-		port := config.DefaultPort
+		binpath, err := filepath.Abs(os.Args[0])
+		if err != nil {
+			log.Fatal(err)
+		}
 
-		err := shell.ExecInBackground(binpath, "kickserver")
+		err = shell.ExecInBackground(binpath, "kickserver")
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
 		}
 
 		fmt.Println("FileTinder started!")
-		fmt.Printf("Open your http://localhost:%d to start choosing files", port)
+		fmt.Printf("Open your http://localhost:%d to start choosing files", config.DefaultPort)
 		break
 
 	case "kickserver":
