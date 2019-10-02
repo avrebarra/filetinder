@@ -93,6 +93,14 @@ func main() {
 		break
 
 	case "stop":
+		url := fmt.Sprintf("http://localhost:%d/api/funcs/stop-server", config.DefaultPort)
+
+		_, err := req.Post(url)
+		if err != nil {
+			handleErrorAndExit(err)
+		}
+
+		fmt.Println("FileTinder stopped...")
 		break
 
 	default:

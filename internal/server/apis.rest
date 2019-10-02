@@ -35,3 +35,7 @@ content-type: application/json
 ### Invoke function to delete all marked files
 POST {{baseURL}}/api/funcs/delete-all HTTP/1.1
 content-type: application/json
+
+### Invoke function to stop server
+POST {{baseURL}}/api/funcs/stop-server HTTP/1.1
+content-type: application/json

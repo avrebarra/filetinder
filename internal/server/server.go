@@ -20,6 +20,7 @@ func setupRouter() *gin.Engine {
 		apis.POST("targets/:id/mark", handlers.MarkTarget)
 
 		// Funcs
+		apis.POST("/funcs/stop-server", handlers.StopServerFunc)
 		apis.POST("/funcs/delete-all", handlers.DeleteAllFunc)
 
 		// Meta
