@@ -22,7 +22,7 @@ func StopServerFunc(c *gin.Context) {
 	c.Status(http.StatusOK)
 
 	go func() {
-		delaySecond(5)
+		delaySecond(1)
 		os.Exit(2)
 	}()
 }
