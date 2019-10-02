@@ -23,6 +23,11 @@ content-type: application/json
 POST {{baseURL}}/api/targets/3/mark HTTP/1.1
 content-type: application/json
 
+{
+    "value": null
+}
+
+
 ### Get FileTinder server meta
 GET {{baseURL}}/api/meta HTTP/1.1
 content-type: application/json

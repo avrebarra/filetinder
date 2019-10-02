@@ -75,11 +75,27 @@ func AddTarget(c *gin.Context) {
 
 // MarkTarget return gin handler to mark target
 func MarkTarget(c *gin.Context) {
+	var requestBody struct {
+		Value string `json:"value"`
+	}
+
 	id, _ := strconv.Atoi(c.Param("id"))
+
+	err := c.BindJSON(&requestBody)
+	if err != nil {
+		log.Panic(err)
+		c.Status(http.StatusBadRequest)
+		return
+	}
+
+	// set default value
+	if requestBody.Value == "" {
+		requestBody.Value = "marked"
+	}
 
 	t := findTargetByID(int64(id))
 	if t != nil {
-		t.Tags = append(t.Tags, "marked")
+		t.Tags = append(t.Tags, requestBody.Value)
 		c.JSON(http.StatusOK, t)
 		return
 	}
