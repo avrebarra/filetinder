@@ -6,10 +6,9 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"github.com/shrotavre/filetinder/internal/filetinder"
-
 	"github.com/imroc/req"
 	"github.com/shrotavre/filetinder/internal/config"
+	"github.com/shrotavre/filetinder/internal/filetinder"
 	"github.com/shrotavre/filetinder/internal/server"
 	"github.com/shrotavre/filetinder/internal/shell"
 )
