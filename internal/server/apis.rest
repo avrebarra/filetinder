@@ -19,6 +19,10 @@ content-type: application/json
 GET {{baseURL}}/api/targets/3 HTTP/1.1
 content-type: application/json
 
+### Delete Single Target
+DELETE  {{baseURL}}/api/targets/3 HTTP/1.1
+content-type: application/json
+
 ### Mark Single Target
 POST {{baseURL}}/api/targets/3/mark HTTP/1.1
 content-type: application/json

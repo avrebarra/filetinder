@@ -17,6 +17,7 @@ func setupRouter() *gin.Engine {
 		apis.GET("targets", handlers.GetTargets)
 		apis.POST("targets", handlers.AddTarget)
 		apis.GET("targets/:id", handlers.GetTarget)
+		apis.DELETE("targets/:id", handlers.DeleteTarget)
 		apis.POST("targets/:id/mark", handlers.MarkTarget)
 
 		// Funcs

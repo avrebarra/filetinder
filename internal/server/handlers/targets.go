@@ -19,14 +19,14 @@ func init() {
 	targetIDIncrement = 1
 }
 
-func findTargetByID(id int64) *filetinder.Target {
-	for _, value := range targetStore {
+func findTargetByID(id int64) (index int, t *filetinder.Target) {
+	for i, value := range targetStore {
 		if value.ID == int64(id) {
-			return value
+			return i, value
 		}
 	}
 
-	return nil
+	return -1, nil
 }
 
 // GetTargets return gin handler to get stored targets
@@ -38,7 +38,7 @@ func GetTargets(c *gin.Context) {
 func GetTarget(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	t := findTargetByID(int64(id))
+	_, t := findTargetByID(int64(id))
 	if t != nil {
 		c.JSON(http.StatusOK, t)
 		return
@@ -73,6 +73,20 @@ func AddTarget(c *gin.Context) {
 	c.JSON(http.StatusOK, t)
 }
 
+// DeleteTarget return gin handler to delete target
+func DeleteTarget(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	i, t := findTargetByID(int64(id))
+	if t != nil {
+		targetStore = append(targetStore[:i], targetStore[i+1:]...)
+		c.JSON(http.StatusOK, t)
+		return
+	}
+
+	c.Status(http.StatusNotFound)
+}
+
 // MarkTarget return gin handler to mark target
 func MarkTarget(c *gin.Context) {
 	var requestBody struct {
@@ -93,7 +107,7 @@ func MarkTarget(c *gin.Context) {
 		requestBody.Value = "marked"
 	}
 
-	t := findTargetByID(int64(id))
+	_, t := findTargetByID(int64(id))
 	if t != nil {
 		t.Tags = append(t.Tags, requestBody.Value)
 		c.JSON(http.StatusOK, t)

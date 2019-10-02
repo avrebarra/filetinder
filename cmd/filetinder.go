@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/shrotavre/filetinder/internal/filetinder"
 
@@ -68,6 +69,20 @@ func main() {
 		break
 
 	case "remove":
+		strid := os.Args[2]
+
+		id, err := strconv.Atoi(strid)
+		if err != nil {
+			handleErrorAndExit(err)
+		}
+
+		url := fmt.Sprintf("http://localhost:%d/api/targets/%d", config.DefaultPort, id)
+		_, err = req.Delete(url, req.Header{"Accept": "application/json"})
+		if err != nil {
+			handleErrorAndExit(err)
+		}
+
+		fmt.Printf("File with id:%d removed from dirtinder\n", id)
 		break
 
 	case "list":
