@@ -9,18 +9,8 @@ import (
 	"github.com/shrotavre/filetinder/internal/filetinder"
 )
 
-var (
-	targetStore       filetinder.TargetsCollection
-	targetIDIncrement int64
-)
-
-func init() {
-	targetStore = make([]*filetinder.Target, 0)
-	targetIDIncrement = 1
-}
-
 func findTargetByID(id int64) (index int, t *filetinder.Target) {
-	for i, value := range targetStore {
+	for i, value := range filetinder.TargetStore {
 		if value.ID == int64(id) {
 			return i, value
 		}
@@ -31,7 +21,7 @@ func findTargetByID(id int64) (index int, t *filetinder.Target) {
 
 // GetTargets return gin handler to get stored targets
 func GetTargets(c *gin.Context) {
-	c.JSON(http.StatusOK, targetStore)
+	c.JSON(http.StatusOK, filetinder.TargetStore)
 }
 
 // GetTarget return gin handler to get single stored targets
@@ -61,14 +51,14 @@ func AddTarget(c *gin.Context) {
 	}
 
 	t := filetinder.Target{
-		ID:   targetIDIncrement,
+		ID:   filetinder.TargetIDIncrement,
 		URL:  requestBody.URL,
 		Tags: make([]string, 0),
 	}
 
 	// Add to store
-	targetStore = append(targetStore, &t)
-	targetIDIncrement++
+	filetinder.TargetStore = append(filetinder.TargetStore, &t)
+	filetinder.TargetIDIncrement++
 
 	c.JSON(http.StatusOK, t)
 }
@@ -79,7 +69,7 @@ func DeleteTarget(c *gin.Context) {
 
 	i, t := findTargetByID(int64(id))
 	if t != nil {
-		targetStore = append(targetStore[:i], targetStore[i+1:]...)
+		filetinder.TargetStore = append(filetinder.TargetStore[:i], filetinder.TargetStore[i+1:]...)
 		c.JSON(http.StatusOK, t)
 		return
 	}
