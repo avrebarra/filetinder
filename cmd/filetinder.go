@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 
@@ -49,6 +52,28 @@ func main() {
 		break
 
 	case "add":
+		targetPath, err := filepath.Abs(os.Args[2])
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+
+		message := map[string]interface{}{
+			"url": targetPath,
+		}
+
+		bytePayload, err := json.Marshal(message)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+
+		_, err = http.Post(fmt.Sprintf("http://localhost:%d/api/targets", config.DefaultPort), "application/json", bytes.NewBuffer(bytePayload))
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		fmt.Println("Added to FileTinder:", targetPath)
 		break
 
 	case "remove":
