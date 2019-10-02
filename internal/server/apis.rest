@@ -24,13 +24,12 @@ DELETE  {{baseURL}}/api/targets/2 HTTP/1.1
 content-type: application/json
 
 ### Mark Single Target
-POST {{baseURL}}/api/targets/3/mark HTTP/1.1
+POST {{baseURL}}/api/targets/1/mark HTTP/1.1
 content-type: application/json
 
 {
-    "value": null
+    "value": "remove"
 }
-
 
 ### Get FileTinder server meta
 GET {{baseURL}}/api/meta HTTP/1.1
