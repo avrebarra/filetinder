@@ -14,37 +14,21 @@ func delaySecond(n time.Duration) {
 	time.Sleep(n * time.Second)
 }
 
-func hasTag(ts []string, s string) bool {
-	for _, t := range ts {
-		if t == s {
-			return true
-		}
-	}
-	return false
-}
-
 // DeleteAllFunc return gin handler to delete all marked files
 func DeleteAllFunc(c *gin.Context) {
-	ts := filetinder.TargetColl
-	ntv := filetinder.TargetsCollection(make([]*filetinder.Target, 0))
+	targetStoreInst := filetinder.TargetStoreInst
+	ts := targetStoreInst.List()
 
 	for _, t := range ts {
-		removed := true
-
-		if hasTag(t.Tags, "remove") {
+		if t.HasTag("remove") {
 			err := os.Remove(t.URL)
 			if err != nil {
 				log.Panic(err)
-				removed = false
+			} else {
+				targetStoreInst.Del(t)
 			}
 		}
-
-		if removed == false {
-			ntv = append(ntv, t)
-		}
 	}
-
-	ts = ntv
 
 	c.Status(http.StatusOK)
 }

@@ -9,26 +9,18 @@ import (
 	"github.com/shrotavre/filetinder/internal/filetinder"
 )
 
-func findTargetByID(id int64) (index int, t *filetinder.Target) {
-	for i, value := range filetinder.TargetColl {
-		if value.ID == int64(id) {
-			return i, value
-		}
-	}
-
-	return -1, nil
-}
-
 // GetTargets return gin handler to get stored targets
 func GetTargets(c *gin.Context) {
-	c.JSON(http.StatusOK, filetinder.TargetColl)
+	targetStoreInst := filetinder.TargetStoreInst
+	c.JSON(http.StatusOK, targetStoreInst.List())
 }
 
 // GetTarget return gin handler to get single stored targets
 func GetTarget(c *gin.Context) {
+	targetStoreInst := filetinder.TargetStoreInst
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	_, t := findTargetByID(int64(id))
+	t := targetStoreInst.FindByID(id)
 	if t != nil {
 		c.JSON(http.StatusOK, t)
 		return
@@ -51,25 +43,25 @@ func AddTarget(c *gin.Context) {
 	}
 
 	t := filetinder.Target{
-		ID:   filetinder.TargetIDIncrement,
 		URL:  requestBody.URL,
 		Tags: make([]string, 0),
 	}
 
 	// Add to store
-	filetinder.TargetColl = append(filetinder.TargetColl, &t)
-	filetinder.TargetIDIncrement++
+	targetStoreInst := filetinder.TargetStoreInst
+	svdt := targetStoreInst.Add(&t)
 
-	c.JSON(http.StatusOK, t)
+	c.JSON(http.StatusOK, svdt)
 }
 
 // DeleteTarget return gin handler to delete target
 func DeleteTarget(c *gin.Context) {
+	targetStoreInst := filetinder.TargetStoreInst
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	i, t := findTargetByID(int64(id))
+	t := targetStoreInst.FindByID(id)
 	if t != nil {
-		filetinder.TargetColl = append(filetinder.TargetColl[:i], filetinder.TargetColl[i+1:]...)
+		targetStoreInst.Del(t)
 		c.JSON(http.StatusOK, t)
 		return
 	}
@@ -79,6 +71,8 @@ func DeleteTarget(c *gin.Context) {
 
 // MarkTarget return gin handler to mark target
 func MarkTarget(c *gin.Context) {
+	targetStoreInst := filetinder.TargetStoreInst
+
 	var requestBody struct {
 		Value string `json:"value"`
 	}
@@ -97,7 +91,7 @@ func MarkTarget(c *gin.Context) {
 		requestBody.Value = "marked"
 	}
 
-	_, t := findTargetByID(int64(id))
+	t := targetStoreInst.FindByID(id)
 	if t != nil {
 		t.Tags = append(t.Tags, requestBody.Value)
 		c.JSON(http.StatusOK, t)

@@ -8,7 +8,7 @@ POST {{baseURL}}/api/targets HTTP/1.1
 content-type: application/json
 
 {
-    "url": "cmd/filetinder.go.blok"
+    "url": "cmd/filetinder3.go"
 }
 
 ### Get Targets
@@ -16,7 +16,7 @@ GET {{baseURL}}/api/targets HTTP/1.1
 content-type: application/json
 
 ### Get Single Target
-GET {{baseURL}}/api/targets/3 HTTP/1.1
+GET {{baseURL}}/api/targets/2 HTTP/1.1
 content-type: application/json
 
 ### Delete Single Target

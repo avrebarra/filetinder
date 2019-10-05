@@ -91,7 +91,7 @@ func main() {
 			handleErrorAndExit(err)
 		}
 
-		var ts filetinder.TargetsCollection
+		ts := filetinder.TargetStoreInst.List()
 		r.ToJSON(&ts)
 
 		fmt.Println("List of included files:")
