@@ -68,35 +68,31 @@ func main() {
 		break
 
 	case "remove":
-		strid := os.Args[2]
+		strind := os.Args[2]
 
-		id, err := strconv.Atoi(strid)
+		ind, err := strconv.Atoi(strind)
 		if err != nil {
 			handleErrorAndExit(err)
 		}
 
-		url := fmt.Sprintf("http://localhost:%d/api/targets/%d", config.DefaultPort, id)
+		ts := fetchList()
+		t := ts[ind-1]
+
+		url := fmt.Sprintf("http://localhost:%d/api/targets/%d", config.DefaultPort, t.ID)
 		_, err = req.Delete(url, req.Header{"Accept": "application/json"})
 		if err != nil {
 			handleErrorAndExit(err)
 		}
 
-		fmt.Printf("File with id:%d removed from dirtinder\n", id)
+		fmt.Printf("File '%s' removed from dirtinder\n", t.URL)
 		break
 
 	case "list":
-		url := fmt.Sprintf("http://localhost:%d/api/targets", config.DefaultPort)
-		r, err := req.Get(url, req.Header{"Accept": "application/json"})
-		if err != nil {
-			handleErrorAndExit(err)
-		}
-
-		ts := filetinder.TargetStoreInst.List()
-		r.ToJSON(&ts)
+		ts := fetchList()
 
 		fmt.Println("List of included files:")
 		for i, t := range ts {
-			fmt.Printf("(%d) id:%d : %s", i+1, t.ID, t.URL)
+			fmt.Printf("(%d) %s", i+1, t.URL)
 			if len(t.Tags) > 0 {
 				fmt.Print(" tagged: ", t.Tags)
 			}
@@ -125,4 +121,17 @@ func main() {
 func handleErrorAndExit(err error) {
 	fmt.Println("Error:", err)
 	os.Exit(2)
+}
+
+func fetchList() []*filetinder.Target {
+	url := fmt.Sprintf("http://localhost:%d/api/targets", config.DefaultPort)
+	r, err := req.Get(url, req.Header{"Accept": "application/json"})
+	if err != nil {
+		handleErrorAndExit(err)
+	}
+
+	var ts []*filetinder.Target
+	r.ToJSON(&ts)
+
+	return ts
 }
