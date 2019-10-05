@@ -25,8 +25,8 @@ func hasTag(ts []string, s string) bool {
 
 // DeleteAllFunc return gin handler to delete all marked files
 func DeleteAllFunc(c *gin.Context) {
-	ts := filetinder.TargetStore
-	nts := make([]*filetinder.Target, 0)
+	ts := filetinder.TargetColl
+	ntv := filetinder.TargetsCollection(make([]*filetinder.Target, 0))
 
 	for _, t := range ts {
 		removed := true
@@ -40,11 +40,11 @@ func DeleteAllFunc(c *gin.Context) {
 		}
 
 		if removed == false {
-			nts = append(nts, t)
+			ntv = append(ntv, t)
 		}
 	}
 
-	ts = nts
+	ts = ntv
 
 	c.Status(http.StatusOK)
 }
