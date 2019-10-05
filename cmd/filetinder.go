@@ -89,6 +89,10 @@ func main() {
 
 	case "list":
 		ts := fetchList()
+		if len(ts) == 0 {
+			fmt.Println("No files included yet.\nYou can add some files using 'filetinder add ./file/path'..")
+			return
+		}
 
 		fmt.Println("List of included files:")
 		for i, t := range ts {
