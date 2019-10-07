@@ -4,7 +4,7 @@
 	import FilePreviewer from "./FilePreviewer.svelte"
 	import EmptyState from "./EmptyState.svelte"
 
-	let files = []
+	let files = [1]
 </script>
 
 <div class="container grid-lg">
@@ -27,7 +27,6 @@
 
 			<div style="margin-top: 20px; text-align: center;">
 				<div class="d-inline-block">
-					<div class="divider"></div>
 					<ul class="pagination">
 						<li class="page-item disabled">
 							<a href="#" tabindex="-1">Previous</a>
@@ -51,7 +50,6 @@
 							<a href="#">Next</a>
 						</li>
 					</ul>
-					<div class="divider"></div>
 				</div>
 			</div>
 		</div>
