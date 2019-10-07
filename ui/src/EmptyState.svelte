@@ -1,4 +1,12 @@
-<div class="empty">
+<style>
+  #empty-state{
+    width: 100%;
+    height: 500px;
+  }
+</style>
+
+<div id="empty-state" class="empty">
+  <br><br><br><br>
   <div class="empty-icon">
     <i class="icon icon-3x icon-photo"></i>
   </div>
