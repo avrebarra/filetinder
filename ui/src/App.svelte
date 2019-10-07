@@ -29,25 +29,25 @@
 				<div class="d-inline-block">
 					<ul class="pagination">
 						<li class="page-item disabled">
-							<a href="#" tabindex="-1">Previous</a>
+							<a href="/" tabindex="-1">Previous</a>
 						</li>
 						<li class="page-item active">
-							<a href="#">1</a>
+							<a href="/">1</a>
 						</li>
 						<li class="page-item">
-							<a href="#">2</a>
+							<a href="/">2</a>
 						</li>
 						<li class="page-item">
-							<a href="#">3</a>
+							<a href="/">3</a>
 						</li>
 						<li class="page-item">
 							<span>...</span>
 						</li>
 						<li class="page-item">
-							<a href="#">12</a>
+							<a href="/">12</a>
 						</li>
 						<li class="page-item">
-							<a href="#">Next</a>
+							<a href="/">Next</a>
 						</li>
 					</ul>
 				</div>
@@ -61,7 +61,7 @@
 				
 				<!-- Menu Entries -->
 				<li class="menu-item">
-					<a href="#">
+					<a href="/">
 						<i class="icon icon-stop"></i> Add to Delete list
 					</a>
 					<div class="menu-badge">
@@ -77,7 +77,7 @@
 
 				<!-- Menu Entries -->
 				<li class="menu-item">
-					<a href="#">
+					<a href="/">
 					<i class="icon icon-link"></i> Delete All Marked
 					</a>
 					
