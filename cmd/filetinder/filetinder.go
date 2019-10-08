@@ -50,11 +50,39 @@ func main() {
 		targetPath, err := filepath.Abs(os.Args[2])
 		finErr(err)
 
-		params := sdk.NewTargetParams{URL: targetPath}
-		err = serverSDK.NewTarget(params)
+		fstat, err := os.Stat(targetPath)
 		finErr(err)
 
-		fmt.Println("Added to FileTinder:", targetPath)
+		switch mode := fstat.Mode(); {
+		// If target is a folder
+		case mode.IsDir():
+			fpaths := make([]string, 0)
+			err := filepath.Walk(targetPath, func(path string, info os.FileInfo, err error) error {
+				if info.Mode().IsRegular() {
+					fpaths = append(fpaths, path)
+				}
+				return nil
+			})
+			finErr(err)
+
+			for _, fp := range fpaths {
+				params := sdk.NewTargetParams{URL: fp}
+				err = serverSDK.NewTarget(params)
+				finErr(err)
+			}
+
+			fmt.Println("Added directory to FileTinder:", targetPath)
+			break
+
+		// If target is a single file
+		case mode.IsRegular():
+			params := sdk.NewTargetParams{URL: targetPath}
+			err = serverSDK.NewTarget(params)
+			finErr(err)
+
+			fmt.Println("Added file to FileTinder:", targetPath)
+			break
+		}
 		break
 
 	case "remove":
