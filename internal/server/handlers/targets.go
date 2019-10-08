@@ -54,7 +54,7 @@ func GetTargetFile(c *gin.Context) {
 		}
 
 		extraHeaders := map[string]string{
-			"Content-Disposition": `attachment; filename="gopher.png"`,
+			// "Content-Disposition": `attachment; filename="gopher.png"`,
 		}
 
 		c.DataFromReader(http.StatusOK, fstat.Size, fstat.ContentType, fr, extraHeaders)
