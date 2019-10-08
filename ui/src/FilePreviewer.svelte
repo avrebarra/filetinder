@@ -1,12 +1,24 @@
 <script>
-  export let fileuri;
-  
-  let filepath = "/assets/sample-image.jpeg"
-  let filename = "sample-image.jpg"
-  let filesize = 65000
-  let fileLastMod = "1 Jan, 2017"
+  export let targetID;
 
-  const fmtByte = (byteSize) => {
+  import { afterUpdate } from 'svelte';
+  
+  const baseURI = "http://localhost:17763"
+  const supportedMIMEs = [
+    'image/apng',
+    'image/bmp',
+    'image/gif',
+    'image/x-icon',
+    'image/jpeg', 
+    'image/png', 
+    'image/svg+xml', 
+    'image/tiff', 
+    'image/webp'
+  ]
+
+  let filepath, filename, filesize, fileuri
+
+  const _fmtByte = (byteSize) => {
     if (byteSize / 1000000 > 1) {
       return `${byteSize/1000000}MB`
     } else if (byteSize / 1000 > 1) {
@@ -16,6 +28,30 @@
     }
   }
 
+  const _isDisplayable = (contentType) => {
+    return supportedMIMEs.find((v) => v == contentType)
+  }
+
+  const fetchTargetStats = async () => {
+		const resp = await axios.get(`${baseURI}/api/targets/${targetID}/fstats`, {
+			headers: { "accept": "application/json" }
+		})
+
+		return resp.data
+  }
+    
+  const refreshComponent = async () => {
+    const fstats = await fetchTargetStats(targetID)
+    
+    filepath = fstats.filepath
+    filename = fstats.filename
+    filesize = fstats.size
+    fileuri = _isDisplayable(fstats.contentType) ? `${baseURI}/api/targets/${targetID}/file` : "assets/unsupported-type.png"
+	}
+
+  afterUpdate(async () => {
+		if (targetID > 0) await refreshComponent()
+	})
 </script>
 
 <style>
@@ -47,7 +83,7 @@
   <div class="tile tile-centered">
     <div class="tile-content">
       <div class="tile-title">{filename}</div>
-      <small class="tile-subtitle text-gray">{fmtByte(filesize)} · {fileLastMod} · {filepath}</small>
+      <small class="tile-subtitle text-gray">{_fmtByte(filesize)} · {filepath}</small>
     </div>
     <div class="tile-action">
       <button class="btn btn-link">
