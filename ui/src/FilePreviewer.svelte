@@ -92,9 +92,9 @@
     <div class="image-wrapper">
       <img src={fileuri} alt="" class="img-responsive">
     </div>
-    <div class="p-absolute" style="right: 0px; padding: 10px; transform: translateY(-100%);">
+    <div class="p-absolute" style="right: 0px; top: 0px; padding: 10px;">
     	{#each tags as tag}
-        <span class="chip">{tag}</span> 
+        <span class="chip bg-error">{tag} this</span> 
 	    {/each}
     </div>
   </div>
