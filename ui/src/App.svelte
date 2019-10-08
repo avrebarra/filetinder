@@ -144,7 +144,7 @@
 				<li class="divider" data-content="TAG FILE"></li>
 				
 				<!-- Menu Entries -->
-				<li on:click={()=>markCurrent("remove")} class="menu-item">
+				<li on:click={()=>markCurrent("remove")} class="menu-item tooltip tooltip-right" data-tooltip="shortcut: R">
 					<a href="#">
 						<i class="icon icon-bookmark"></i> Remove
 					</a>
@@ -157,7 +157,7 @@
 				<li class="divider" data-content="RUN FUNCTIONS"></li>
 
 				<!-- Menu Entries -->
-				<li  on:click={()=>runFunc("delete-all")} class="menu-item">
+				<li on:click={()=>runFunc("delete-all")} class="menu-item tooltip tooltip-bottom" data-tooltip="Delete all files you have marked as 'remove'">
 					<a href="#">
 						<i class="icon icon-link"></i> Delete All Marked
 					</a>
