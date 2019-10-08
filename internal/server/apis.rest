@@ -24,7 +24,7 @@ GET {{baseURL}}/api/targets/2/file HTTP/1.1
 content-type: application/json
 
 ### Get Single Target's Stat
-GET {{baseURL}}/api/targets/2/stat HTTP/1.1
+GET {{baseURL}}/api/targets/2/fstats HTTP/1.1
 content-type: application/json
 
 ### Delete Single Target
