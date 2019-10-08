@@ -3,6 +3,7 @@ package filetinder
 import (
 	"net/http"
 	"os"
+	"path/filepath"
 )
 
 // Target is target files in FileTinder
@@ -14,6 +15,8 @@ type Target struct {
 
 // TargetFileStats is target's file stats/metadatas
 type TargetFileStats struct {
+	Filename    string `json:"filename"`
+	Filepath    string `json:"filepath"`
 	ContentType string `json:"contentType"`
 	Size        int64  `json:"size"`
 }
@@ -58,12 +61,16 @@ func (t *Target) GetStats() (filestats *TargetFileStats, err error) {
 		return nil, err
 	}
 
+	_, filename := filepath.Split(t.URL)
+
 	defer f.Close()
 
 	// build stats
 	stats := TargetFileStats{
 		ContentType: fmimetype,
 		Size:        fstat.Size(),
+		Filename:    filename,
+		Filepath:    t.URL,
 	}
 
 	return &stats, nil
