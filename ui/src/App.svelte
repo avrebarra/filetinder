@@ -39,8 +39,8 @@
 		await axios.post(`${baseURI}/api/funcs/${funcName}`, {
 			headers: { "accept": "application/json" }
 		})
-
-		await refreshPage()
+		
+		openPage(1)
 	}
 
 	const refreshPage = async () => {

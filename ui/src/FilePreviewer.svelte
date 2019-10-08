@@ -1,8 +1,6 @@
 <script>
   export let targetID;
   export function refresh(){
-    console.log('IN');
-    
     if (!targetID) return
     refreshComponent()
   }
