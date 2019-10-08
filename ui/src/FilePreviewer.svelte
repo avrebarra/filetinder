@@ -72,9 +72,12 @@
 </style>
 
 <div class="card">
-  <div class="card-image">
+  <div class="card-image p-relative">
     <div class="image-wrapper">
       <img src={fileuri} alt="" class="img-responsive">
+    </div>
+    <div class="p-absolute" style="right: 0px; padding: 10px; transform: translateY(-100%);">
+      <span class="chip">To-Remove</span> 
     </div>
   </div>
 </div>
