@@ -5,6 +5,8 @@
 	import FilePreviewer from "./FilePreviewer.svelte"
 	import EmptyState from "./EmptyState.svelte"
 
+	let filePreviewer
+
 	let targets = []
 	let dispPage = 1
 	let dispTargetID
@@ -21,6 +23,8 @@
 	const openPage = (pageNumber) => {
 		dispPage = pageNumber
 		dispTargetID = targets[dispPage - 1].id
+
+		refreshPage()
 	}
 
 	const markCurrent = async (value) => {
@@ -40,11 +44,13 @@
 	}
 
 	const refreshPage = async () => {
-		console.log('Auto refreshing...');
+		console.log('Refreshing...');
 		
 		await refreshTargetList()
 		dispPage = dispPage
 		dispTargetID = targets[dispPage - 1].id
+
+		filePreviewer.refresh()
 	}
 
 	onMount(async () => {
@@ -59,6 +65,8 @@
 		Mousetrap.bind('right', function() { dispPage < targets.length ? openPage(dispPage + 1) : null; }, 'keydown');
 		Mousetrap.bind('left', function() { dispPage > 1 ? openPage(dispPage - 1) : null; }, 'keydown');
 		Mousetrap.bind('d', function() { markCurrent('remove'); }, 'keyup');
+
+		refreshPage()
 
 		var rc = setInterval(refreshPage, 10000);
 	})
@@ -80,7 +88,7 @@
 	<div class="columns">
 		<div class="column col-9">
 			<!--  Previewer -->
-			<FilePreviewer targetID={dispTargetID}/>
+			<FilePreviewer targetID={dispTargetID} bind:this={filePreviewer}/>
 			<!-- {()=>openPage()} -->
 			<!-- Pagination -->
 			<div style="margin-top: 20px; text-align: center;">

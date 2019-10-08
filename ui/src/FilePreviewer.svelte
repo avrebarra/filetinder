@@ -1,8 +1,12 @@
 <script>
   export let targetID;
+  export function refresh(){
+    console.log('IN');
+    
+    if (!targetID) return
+    refreshComponent()
+  }
 
-  import { afterUpdate } from 'svelte';
-  
   const baseURI = "http://localhost:17763"
   const supportedMIMEs = [
     'image/apng',
@@ -60,9 +64,10 @@
     tags = fdata.tags
 	}
 
-  afterUpdate(async () => {
-		if (targetID > 0) await refreshComponent()
-	})
+  // onMount(async () => {
+  //   var rc = setInterval(refreshPage, 3000);
+	// 	if (targetID > 0) await refreshComponent()
+	// })
 </script>
 
 <style>
