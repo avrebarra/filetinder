@@ -23,10 +23,20 @@
 		dispTargetID = targets[dispPage - 1].id
 	}
 
+	const markCurrent = async (value) => {
+		const resp = await axios.post(`${baseURI}/api/targets/${dispTargetID}/mark`, { value }, {
+			headers: { "accept": "application/json" }
+		})
+	}
+	const runFunc = async (funcName) => {
+		const resp = await axios.post(`${baseURI}/api/funcs/${funcName}`, {
+			headers: { "accept": "application/json" }
+		})
+	}
+
 	onMount(async () => {
 		await refreshTargetList()
 		console.log(targets);
-		
 
 		if (targets.length > 0){
 			dispPage = 1
@@ -96,7 +106,7 @@
 						</li>
 						{/if}
 						<li on:click={()=>{if(dispPage == targets.length)return; openPage(dispPage + 1)}} class="page-item {dispPage == targets.length ? "disabled" : ""}">
-							<a href="#{dispPage + 1}">Next</a>
+							<a href="#">Next</a>
 						</li>
 					</ul>
 				</div>
@@ -109,13 +119,10 @@
 				<li class="divider" data-content="MARK FILE"></li>
 				
 				<!-- Menu Entries -->
-				<li class="menu-item">
-					<a href="/">
+				<li on:click={()=>markCurrent("remove")} class="menu-item">
+					<a href="#">
 						<i class="icon icon-stop"></i> Add to Delete list
 					</a>
-					<div class="menu-badge">
-					<label class="label label-primary">2</label>
-					</div>
 				</li>
 			</ul>
 
@@ -125,9 +132,9 @@
 				<li class="divider" data-content="RUN FUNCTIONS"></li>
 
 				<!-- Menu Entries -->
-				<li class="menu-item">
-					<a href="/">
-					<i class="icon icon-link"></i> Delete All Marked
+				<li  on:click={()=>runFunc("delete-all")} class="menu-item">
+					<a href="#">
+						<i class="icon icon-link"></i> Delete All Marked
 					</a>
 					
 				</li>
