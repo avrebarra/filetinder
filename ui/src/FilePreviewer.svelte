@@ -17,6 +17,7 @@
   ]
 
   let filepath, filename, filesize, fileuri
+  let tags = []
 
   const _fmtByte = (byteSize) => {
     if (byteSize / 1000000 > 1) {
@@ -39,14 +40,24 @@
 
 		return resp.data
   }
+
+  const fetchTargetData = async () => {
+		const resp = await axios.get(`${baseURI}/api/targets/${targetID}`, {
+			headers: { "accept": "application/json" }
+		})
+
+		return resp.data
+  }
     
   const refreshComponent = async () => {
     const fstats = await fetchTargetStats(targetID)
+    const fdata = await fetchTargetData(targetID)
     
     filepath = fstats.filepath
     filename = fstats.filename
     filesize = fstats.size
     fileuri = _isDisplayable(fstats.contentType) ? `${baseURI}/api/targets/${targetID}/file` : "assets/unsupported-type.png"
+    tags = fdata.tags
 	}
 
   afterUpdate(async () => {
@@ -77,7 +88,9 @@
       <img src={fileuri} alt="" class="img-responsive">
     </div>
     <div class="p-absolute" style="right: 0px; padding: 10px; transform: translateY(-100%);">
-      <span class="chip">To-Remove</span> 
+    	{#each tags as tag}
+        <span class="chip">{tag}</span> 
+	    {/each}
     </div>
   </div>
 </div>
