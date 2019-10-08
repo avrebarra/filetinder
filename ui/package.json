@@ -17,6 +17,7 @@
   },
   "scripts": {
     "build": "rollup -c",
+    "build:silent": "rollup -c --silent",
     "autobuild": "rollup -c -w",
     "dev": "run-p start:dev autobuild",
     "start:dev": "sirv public --single --dev"
