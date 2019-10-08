@@ -46,7 +46,7 @@
 			dispTargetID = targets[dispPage - 1].id
 		}
 
-		var rc = setInterval(refreshTargetList, 15000);
+		var rc = setInterval(refreshTargetList, 1000);
 	})
 </script>
 
