@@ -21,15 +21,27 @@ type TargetFileStats struct {
 	Size        int64  `json:"size"`
 }
 
-// HasTag check if target has specific tag
-func (t *Target) HasTag(s string) bool {
-	for _, t := range t.Tags {
+// FindTag find tag inside target
+func (t *Target) FindTag(s string) (index int32, found bool) {
+	for i, t := range t.Tags {
 		if t == s {
-			return true
+			return int32(i), true
 		}
 	}
 
-	return false
+	return 0, false
+}
+
+// ToggleTag toggle a tag in target
+func (t *Target) ToggleTag(tagname string) {
+	i, found := t.FindTag(tagname)
+	if found {
+		// reslice tags
+		t.Tags = append(t.Tags[:i], t.Tags[i+1:]...)
+	} else {
+		// append tags
+		t.Tags = append(t.Tags, tagname)
+	}
 }
 
 // GetFile returns target's file reader

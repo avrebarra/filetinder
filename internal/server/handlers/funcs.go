@@ -20,7 +20,8 @@ func DeleteAllFunc(c *gin.Context) {
 	ts := targetStoreInst.List()
 
 	for _, t := range ts {
-		if t.HasTag("remove") {
+		_, found := t.FindTag("remove")
+		if found {
 			err := os.Remove(t.URL)
 			if err != nil {
 				log.Panic(err)

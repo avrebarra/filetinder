@@ -128,8 +128,8 @@ func DeleteTarget(c *gin.Context) {
 	c.Status(http.StatusNotFound)
 }
 
-// MarkTarget return gin handler to mark target
-func MarkTarget(c *gin.Context) {
+// ToggleMarkTarget return gin handler to mark target
+func ToggleMarkTarget(c *gin.Context) {
 	targetStoreInst := filetinder.TargetStoreInst
 
 	var requestBody struct {
@@ -152,10 +152,9 @@ func MarkTarget(c *gin.Context) {
 
 	t := targetStoreInst.FindByID(id)
 	if t != nil {
-		if !t.HasTag(requestBody.Value) {
-			t.Tags = append(t.Tags, requestBody.Value)
-		}
+		t.ToggleTag(requestBody.Value)
 		c.JSON(http.StatusOK, t)
+
 		return
 	}
 

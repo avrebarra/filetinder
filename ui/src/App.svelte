@@ -64,7 +64,7 @@
 		// Mousetrap Hotkey Setup
 		Mousetrap.bind('right', function() { dispPage < targets.length ? openPage(dispPage + 1) : null; }, 'keydown');
 		Mousetrap.bind('left', function() { dispPage > 1 ? openPage(dispPage - 1) : null; }, 'keydown');
-		Mousetrap.bind('d', function() { markCurrent('remove'); }, 'keyup');
+		Mousetrap.bind('r', function() { markCurrent('remove'); }, 'keyup');
 
 		refreshPage()
 
@@ -141,12 +141,12 @@
 		<!--  Menu -->
 		<div class="column col-3">
 			<ul class="menu">
-				<li class="divider" data-content="MARK FILE"></li>
+				<li class="divider" data-content="TAG FILE"></li>
 				
 				<!-- Menu Entries -->
 				<li on:click={()=>markCurrent("remove")} class="menu-item">
 					<a href="#">
-						<i class="icon icon-stop"></i> Add to Delete list
+						<i class="icon icon-bookmark"></i> Remove
 					</a>
 				</li>
 			</ul>

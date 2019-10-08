@@ -30,7 +30,7 @@ func setupRouter() *gin.Engine {
 		apis.GET("targets/:id/file", handlers.GetTargetFile)
 		apis.GET("targets/:id/fstats", handlers.GetTargetStat)
 		apis.DELETE("targets/:id", handlers.DeleteTarget)
-		apis.POST("targets/:id/mark", handlers.MarkTarget)
+		apis.POST("targets/:id/mark", handlers.ToggleMarkTarget)
 
 		// Funcs
 		apis.POST("/funcs/stop-server", handlers.StopServerFunc)
