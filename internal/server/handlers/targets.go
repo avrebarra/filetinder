@@ -152,7 +152,9 @@ func MarkTarget(c *gin.Context) {
 
 	t := targetStoreInst.FindByID(id)
 	if t != nil {
-		t.Tags = append(t.Tags, requestBody.Value)
+		if !t.HasTag(requestBody.Value) {
+			t.Tags = append(t.Tags, requestBody.Value)
+		}
 		c.JSON(http.StatusOK, t)
 		return
 	}
