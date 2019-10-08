@@ -24,18 +24,27 @@
 	}
 
 	const markCurrent = async (value) => {
-		const resp = await axios.post(`${baseURI}/api/targets/${dispTargetID}/mark`, { value }, {
+		await axios.post(`${baseURI}/api/targets/${dispTargetID}/mark`, { value }, {
 			headers: { "accept": "application/json" }
 		})
 		
-		await refreshTargetList()
+		await refreshPage()
 	}
+	
 	const runFunc = async (funcName) => {
-		const resp = await axios.post(`${baseURI}/api/funcs/${funcName}`, {
+		await axios.post(`${baseURI}/api/funcs/${funcName}`, {
 			headers: { "accept": "application/json" }
 		})
 
+		await refreshPage()
+	}
+
+	const refreshPage = async () => {
+		console.log('Auto refreshing...');
+		
 		await refreshTargetList()
+		dispPage = dispPage
+		dispTargetID = targets[dispPage - 1].id
 	}
 
 	onMount(async () => {
@@ -46,7 +55,7 @@
 			dispTargetID = targets[dispPage - 1].id
 		}
 
-		var rc = setInterval(refreshTargetList, 1000);
+		var rc = setInterval(refreshPage, 10000);
 	})
 </script>
 
