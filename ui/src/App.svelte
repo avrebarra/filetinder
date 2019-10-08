@@ -59,7 +59,7 @@
 			<div style="margin-top: 20px; text-align: center;">
 				<div class="d-inline-block">
 					<ul class="pagination">
-						<li on:click={()=>openPage(dispPage - 1)} class="page-item {dispPage <= 1 ? "disabled" : ""}">
+						<li on:click={()=>{if(dispPage <= 1)return;openPage(dispPage - 1)}} class="page-item {dispPage <= 1 ? "disabled" : ""}">
 							<a href="#{dispPage - 1}" tabindex="-1">Previous</a>
 						</li>
 						{#if dispPage > 2}
@@ -95,7 +95,7 @@
 							<a href="#">{targets.length}</a>
 						</li>
 						{/if}
-						<li on:click={()=>openPage(dispPage + 1)} class="page-item {dispPage == targets.length ? "disabled" : ""}">
+						<li on:click={()=>{if(dispPage == targets.length)return; openPage(dispPage + 1)}} class="page-item {dispPage == targets.length ? "disabled" : ""}">
 							<a href="#{dispPage + 1}">Next</a>
 						</li>
 					</ul>
