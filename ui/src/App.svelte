@@ -55,6 +55,11 @@
 			dispTargetID = targets[dispPage - 1].id
 		}
 
+		// Mousetrap Hotkey Setup
+		Mousetrap.bind('right', function() { dispPage < targets.length ? openPage(dispPage + 1) : null; }, 'keydown');
+		Mousetrap.bind('left', function() { dispPage > 1 ? openPage(dispPage - 1) : null; }, 'keydown');
+		Mousetrap.bind('d', function() { markCurrent('remove'); }, 'keyup');
+
 		var rc = setInterval(refreshPage, 10000);
 	})
 </script>
