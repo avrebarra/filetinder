@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"bufio"
 	"log"
 	"net/http"
 	"strconv"
@@ -23,6 +24,64 @@ func GetTarget(c *gin.Context) {
 	t := targetStoreInst.FindByID(id)
 	if t != nil {
 		c.JSON(http.StatusOK, t)
+		return
+	}
+
+	c.Status(http.StatusNotFound)
+}
+
+// GetTargetFile return gin handler to get single stored target's file
+func GetTargetFile(c *gin.Context) {
+	targetStoreInst := filetinder.TargetStoreInst
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	t := targetStoreInst.FindByID(id)
+	if t != nil {
+		f, err := t.GetFile()
+		if err != nil {
+			log.Panic(err)
+			c.Status(http.StatusBadRequest)
+			return
+		}
+
+		fr := bufio.NewReader(f)
+
+		fstat, err := t.GetStats()
+		if err != nil {
+			log.Panic(err)
+			c.Status(http.StatusBadRequest)
+			return
+		}
+
+		extraHeaders := map[string]string{
+			"Content-Disposition": `attachment; filename="gopher.png"`,
+		}
+
+		c.DataFromReader(http.StatusOK, fstat.Size, fstat.ContentType, fr, extraHeaders)
+
+		defer f.Close()
+
+		return
+	}
+
+	c.Status(http.StatusNotFound)
+}
+
+// GetTargetStat return gin handler to get single stored target's filestats
+func GetTargetStat(c *gin.Context) {
+	targetStoreInst := filetinder.TargetStoreInst
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	t := targetStoreInst.FindByID(id)
+	if t != nil {
+		fstat, err := t.GetStats()
+		if err != nil {
+			log.Panic(err)
+			c.Status(http.StatusBadRequest)
+			return
+		}
+
+		c.JSON(http.StatusOK, fstat)
 		return
 	}
 

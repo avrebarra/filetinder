@@ -1,10 +1,21 @@
 package filetinder
 
+import (
+	"net/http"
+	"os"
+)
+
 // Target is target files in FileTinder
 type Target struct {
 	ID   int64    `json:"id"`
 	URL  string   `json:"url"`
 	Tags []string `json:"tags"`
+}
+
+// TargetFileStats is target's file stats/metadatas
+type TargetFileStats struct {
+	ContentType string `json:"contentType"`
+	Size        int64  `json:"size"`
 }
 
 // HasTag check if target has specific tag
@@ -16,6 +27,64 @@ func (t *Target) HasTag(s string) bool {
 	}
 
 	return false
+}
+
+// GetFile returns target's file reader
+func (t *Target) GetFile() (reader *os.File, err error) {
+	filepath := t.URL
+
+	f, err := os.Open(filepath)
+	if err != nil {
+		return nil, err
+	}
+
+	return f, nil
+}
+
+// GetStats return target's file stats
+func (t *Target) GetStats() (filestats *TargetFileStats, err error) {
+	f, err := t.GetFile()
+	if err != nil {
+		return nil, err
+	}
+
+	fstat, err := f.Stat()
+	if err != nil {
+		return nil, err
+	}
+
+	fmimetype, err := getContentType(f)
+	if err != nil {
+		return nil, err
+	}
+
+	defer f.Close()
+
+	// build stats
+	stats := TargetFileStats{
+		ContentType: fmimetype,
+		Size:        fstat.Size(),
+	}
+
+	return &stats, nil
+}
+
+// getContentType sniff file's content type
+// Credits: https://golangcode.com/get-the-content-type-of-file/
+func getContentType(out *os.File) (string, error) {
+	// Only the first 512 bytes are used to sniff the content type.
+	buffer := make([]byte, 512)
+
+	_, err := out.Read(buffer)
+	if err != nil {
+		return "", err
+	}
+
+	// Use the net/http package's handy DectectContentType function. Always returns a valid
+	// content-type by returning "application/octet-stream" if no others seemed to match.
+	contentType := http.DetectContentType(buffer)
+
+	return contentType, nil
 }
 
 // TargetStore is storage that maintains active targets
