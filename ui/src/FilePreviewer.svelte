@@ -94,7 +94,7 @@
     </div>
     <div class="p-absolute" style="right: 0px; top: 0px; padding: 10px;">
     	{#each tags as tag}
-        <span class="chip bg-error">{tag} this</span> 
+        <span class="chip bg-error">to {tag}</span> 
 	    {/each}
     </div>
   </div>
