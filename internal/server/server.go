@@ -3,13 +3,23 @@ package server
 import (
 	"fmt"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/shrotavre/filetinder/internal/config"
 	"github.com/shrotavre/filetinder/internal/server/handlers"
 )
 
+func getCORSMiddleware() gin.HandlerFunc {
+	CORSConfig := cors.DefaultConfig()
+	CORSConfig.AllowOrigins = []string{"http://localhost:5000"}
+
+	return cors.New(CORSConfig)
+}
+
 func setupRouter() *gin.Engine {
 	r := gin.Default()
+
+	r.Use(getCORSMiddleware())
 
 	apis := r.Group("/api")
 	{
