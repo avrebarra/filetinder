@@ -27,16 +27,19 @@
 		const resp = await axios.post(`${baseURI}/api/targets/${dispTargetID}/mark`, { value }, {
 			headers: { "accept": "application/json" }
 		})
+		
+		await refreshTargetList()
 	}
 	const runFunc = async (funcName) => {
 		const resp = await axios.post(`${baseURI}/api/funcs/${funcName}`, {
 			headers: { "accept": "application/json" }
 		})
+
+		await refreshTargetList()
 	}
 
 	onMount(async () => {
 		await refreshTargetList()
-		console.log(targets);
 
 		if (targets.length > 0){
 			dispPage = 1
