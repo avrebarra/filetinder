@@ -98,7 +98,7 @@ func MakeTargetStore() (targetStore *TargetStore) {
 	ts := TargetStore{}
 
 	ts.targets = make([]*Target, 0)
-	ts.idIncr = 0
+	ts.idIncr = 1
 
 	return &ts
 }
