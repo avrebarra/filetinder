@@ -11,11 +11,11 @@ dist: clean distgo distui
 	rm -rf dist/tmp/
 
 distgo:
-	CGO_ENABLED=0 GOOS=linux go build -ldflags $(LDFLAGS) -a -installsuffix cgo -o dist/tmp/filetinder cmd/filetinder.go
-	CGO_ENABLED=0 GOOS=darwin go build -ldflags $(LDFLAGS) -a -installsuffix cgo -o dist/tmp/filetinder-darwin cmd/filetinder.go
-	CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=6 go build -ldflags $(LDFLAGS) -a -installsuffix cgo -o dist/tmp/filetinder-armhf cmd/filetinder.go
-	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags $(LDFLAGS) -a -installsuffix cgo -o dist/tmp/filetinder-arm64 cmd/filetinder.go
-	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags $(LDFLAGS) -a -installsuffix cgo -o dist/tmp/filetinder.exe cmd/filetinder.go
+	CGO_ENABLED=0 GOOS=linux go build -ldflags $(LDFLAGS) -a -installsuffix cgo -o dist/tmp/filetinder cmd/filetinder/*
+	CGO_ENABLED=0 GOOS=darwin go build -ldflags $(LDFLAGS) -a -installsuffix cgo -o dist/tmp/filetinder-darwin cmd/filetinder/*
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=6 go build -ldflags $(LDFLAGS) -a -installsuffix cgo -o dist/tmp/filetinder-armhf cmd/filetinder/*
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags $(LDFLAGS) -a -installsuffix cgo -o dist/tmp/filetinder-arm64 cmd/filetinder/*
+	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags $(LDFLAGS) -a -installsuffix cgo -o dist/tmp/filetinder.exe cmd/filetinder/*
 
 distui:
 	pushd ui && yarn build && popd && cp -ar ui/public dist/tmp/ui
