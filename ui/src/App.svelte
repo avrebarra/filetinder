@@ -1,10 +1,40 @@
 <script>
-	export let name;
+	export let baseURI;
 
+	import { onMount } from 'svelte';
 	import FilePreviewer from "./FilePreviewer.svelte"
 	import EmptyState from "./EmptyState.svelte"
 
-	let files = [1]
+	let targets = []
+	let dispPage = 1
+	let dispTargetID
+
+	// Functions
+	const refreshTargetList = async () => {
+		const resp = await axios.get(`${baseURI}/api/targets`, {
+			headers: { "accept": "application/json" }
+		})
+
+		targets = resp.data || []
+	}
+
+	const openPage = (pageNumber) => {
+		dispPage = pageNumber
+		dispTargetID = targets[dispPage - 1].id
+	}
+
+	onMount(async () => {
+		await refreshTargetList()
+		console.log(targets);
+		
+
+		if (targets.length > 0){
+			dispPage = 1
+			dispTargetID = targets[dispPage - 1].id
+		}
+
+		var rc = setInterval(refreshTargetList, 15000);
+	})
 </script>
 
 <div class="container grid-lg">
@@ -13,7 +43,7 @@
 		<p class="text-gray" style="margin-top: -15px;"><em>Tinderify your files. Keep what you liked, delete what you hate (with caution)</em></p>
 	</div>
 
-	{#if files.length <= 0}
+	{#if targets.length <= 0}
 	<!-- Empty State -->
 	<div class="columns">
 		<EmptyState/>
@@ -23,31 +53,50 @@
 	<div class="columns">
 		<div class="column col-9">
 			<!--  Previewer -->
-			<FilePreviewer fileuri="/assets/sample-image.jpeg"/>
-
+			<FilePreviewer targetID={dispTargetID}/>
+			<!-- {()=>openPage()} -->
+			<!-- Pagination -->
 			<div style="margin-top: 20px; text-align: center;">
 				<div class="d-inline-block">
 					<ul class="pagination">
-						<li class="page-item disabled">
-							<a href="/" tabindex="-1">Previous</a>
+						<li on:click={()=>openPage(dispPage - 1)} class="page-item {dispPage <= 1 ? "disabled" : ""}">
+							<a href="#{dispPage - 1}" tabindex="-1">Previous</a>
 						</li>
-						<li class="page-item active">
-							<a href="/">1</a>
+						{#if dispPage > 2}
+						<li on:click={()=>openPage(1)} class="page-item">
+							<a href="#">1</a>
 						</li>
-						<li class="page-item">
-							<a href="/">2</a>
-						</li>
-						<li class="page-item">
-							<a href="/">3</a>
-						</li>
+						{/if}
+						{#if dispPage > 2}
 						<li class="page-item">
 							<span>...</span>
 						</li>
-						<li class="page-item">
-							<a href="/">12</a>
+						{/if}
+						{#if dispPage > 1}
+						<li on:click={()=>openPage(dispPage - 1)} class="page-item">
+							<a href="#">{dispPage - 1}</a>
 						</li>
+						{/if}
+						<li class="page-item active">
+							<a href="#">{dispPage}</a>
+						</li>
+						{#if targets.length - dispPage >= 1}
+						<li on:click={()=>openPage(dispPage + 1)} class="page-item">
+							<a href="#">{dispPage + 1}</a>
+						</li>
+						{/if}
+						{#if targets.length - dispPage > 1}
 						<li class="page-item">
-							<a href="/">Next</a>
+							<span>...</span>
+						</li>
+						{/if}
+						{#if targets.length - dispPage > 1}
+						<li on:click={()=>openPage(targets.length)} class="page-item">
+							<a href="#">{targets.length}</a>
+						</li>
+						{/if}
+						<li on:click={()=>openPage(dispPage + 1)} class="page-item {dispPage == targets.length ? "disabled" : ""}">
+							<a href="#{dispPage + 1}">Next</a>
 						</li>
 					</ul>
 				</div>
