@@ -20,9 +20,9 @@
 
   const _fmtByte = (byteSize) => {
     if (byteSize / 1000000 > 1) {
-      return `${byteSize/1000000}MB`
+      return `${parseFloat(byteSize/1000000).toFixed(2)}MB`
     } else if (byteSize / 1000 > 1) {
-      return `${byteSize/1000}KB`
+      return `${parseFloat(byteSize/1000).toFixed(2)}KB`
     } else {
       return `${byteSize}B`
     }
