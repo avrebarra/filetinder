@@ -40,7 +40,9 @@ $ filetinder remove 4 # this will remove 4th included file from list
 
 ### Tagging and removing files via GUI
 
-Once you started filetinder, open the link provided by the cli, defaultly will be at [localhost:17763](http://localhost:17763). You will be presented with this interface you can use:
+Once you started filetinder, open the link provided by the cli, defaultly will be at [localhost:17763/ui](http://localhost:17763/ui/).
+
+You will be presented with interface below.
 
 ![Contribution guidelines for this project](docs/images/ui-preview.gif)
 

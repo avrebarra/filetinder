@@ -37,7 +37,7 @@ func main() {
 		finErr(err)
 
 		fmt.Println("FileTinder started!")
-		fmt.Printf("Open your http://localhost:%d to start choosing files", filetinder.Config.Port)
+		fmt.Printf("Open your http://localhost:%d/ui/ to start choosing files", filetinder.Config.Port)
 		return
 
 	case "kickserver":
