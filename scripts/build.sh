@@ -64,16 +64,14 @@ fi
 rm -rf dist/*
 
 echo "(1/4) Building binaries..."
-go build "-ldflags=$GO_LDFLAGS" "-gcflags=$TRIM" "-asmflags=$TRIM" "$@" -o dist/tmp/filetinder cmd/filetinder/*
+go build "-ldflags=$GO_LDFLAGS" "-gcflags=$TRIM" "-asmflags=$TRIM" "$@" -o dist/filetinder cmd/filetinder/*
 
 echo "(2/4) Building UI.."
-pushd ui > /dev/null && yarn run --silent build:silent && popd > /dev/null && cp -ar ui/public dist/tmp/ui
+pushd ui > /dev/null && yarn run --silent build:silent && popd > /dev/null && cp -ar ui/public dist/ui
 
 echo "(3/4) Packing up..."
-pushd dist/tmp > /dev/null && tar -czf filetinder.tar.gz ui filetinder && popd > /dev/null
+pushd dist > /dev/null && tar -czf filetinder.tar.gz ui filetinder && popd > /dev/null
 
 echo "(4/4) Cleaning..."
-cp dist/tmp/filetinder.tar.gz dist/filetinder.tar.gz
-rm -rf dist/tmp/
 
 echo "Finished!"
