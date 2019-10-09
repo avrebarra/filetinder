@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -17,6 +18,10 @@ func getCORSMiddleware() gin.HandlerFunc {
 }
 
 func setupRouter() *gin.Engine {
+	if filetinder.Config.Env == "production" {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	r := gin.Default()
 
 	r.Use(getCORSMiddleware())
@@ -39,6 +44,8 @@ func setupRouter() *gin.Engine {
 		// Meta
 		apis.GET("/meta", handlers.GetMeta)
 	}
+
+	r.StaticFS("/ui", http.Dir(filetinder.Config.UIPath))
 
 	return r
 }
