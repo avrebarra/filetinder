@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"github.com/shrotavre/filetinder/internal/config"
+	"github.com/shrotavre/filetinder/internal/filetinder"
 	"github.com/shrotavre/filetinder/internal/server"
 	"github.com/shrotavre/filetinder/internal/server/sdk"
 	"github.com/shrotavre/filetinder/internal/shell"
@@ -37,7 +37,7 @@ func main() {
 		finErr(err)
 
 		fmt.Println("FileTinder started!")
-		fmt.Printf("Open your http://localhost:%d to start choosing files", config.DefaultPort)
+		fmt.Printf("Open your http://localhost:%d to start choosing files", filetinder.Config.Port)
 		return
 
 	case "kickserver":

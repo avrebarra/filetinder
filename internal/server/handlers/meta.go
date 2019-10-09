@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/shrotavre/filetinder/internal/config"
+	"github.com/shrotavre/filetinder/internal/filetinder"
 )
 
 type meta struct {
@@ -16,7 +16,7 @@ type meta struct {
 // GetMeta return gin handler to get server meta
 func GetMeta(c *gin.Context) {
 	appmeta := &meta{}
-	appmeta.Port = config.DefaultPort
+	appmeta.Port = filetinder.Config.Port
 	appmeta.PID = os.Getpid()
 
 	c.JSON(http.StatusOK, appmeta)

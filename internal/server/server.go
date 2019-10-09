@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/shrotavre/filetinder/internal/config"
+	"github.com/shrotavre/filetinder/internal/filetinder"
 	"github.com/shrotavre/filetinder/internal/server/handlers"
 )
 
@@ -45,7 +45,7 @@ func setupRouter() *gin.Engine {
 
 // Start starts FileTinder main HTTP server
 func Start() error {
-	port := config.DefaultPort
+	port := filetinder.Config.Port
 
 	r := setupRouter()
 

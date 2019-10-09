@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/imroc/req"
-	"github.com/shrotavre/filetinder/internal/config"
 	"github.com/shrotavre/filetinder/internal/filetinder"
 )
 
@@ -18,7 +17,7 @@ type FileTinderSDK struct {
 // New create new sdk instance
 func New() *FileTinderSDK {
 	sdk := FileTinderSDK{
-		BaseURI: fmt.Sprintf("http://localhost:%d", config.DefaultPort),
+		BaseURI: fmt.Sprintf("http://localhost:%d", filetinder.Config.Port),
 	}
 
 	return &sdk
@@ -41,7 +40,7 @@ func (sdk *FileTinderSDK) NewTarget(p NewTargetParams) error {
 
 // ListTarget list all target existed in active server
 func (sdk *FileTinderSDK) ListTarget() (targets []*filetinder.Target, err error) {
-	url := fmt.Sprintf("http://localhost:%d/api/targets", config.DefaultPort)
+	url := fmt.Sprintf("http://localhost:%d/api/targets", filetinder.Config.Port)
 	r, err := req.Get(url, req.Header{"Accept": "application/json"})
 	if err != nil {
 		return nil, err
@@ -55,7 +54,7 @@ func (sdk *FileTinderSDK) ListTarget() (targets []*filetinder.Target, err error)
 
 // DelTarget delete meant target
 func (sdk *FileTinderSDK) DelTarget(id int64) error {
-	url := fmt.Sprintf("http://localhost:%d/api/targets", config.DefaultPort)
+	url := fmt.Sprintf("http://localhost:%d/api/targets", filetinder.Config.Port)
 	_, err := req.Delete(url, req.Header{"Accept": "application/json"})
 	if err != nil {
 		return err
@@ -66,7 +65,7 @@ func (sdk *FileTinderSDK) DelTarget(id int64) error {
 
 // KillServer kill currently running server via HTTP call
 func (sdk *FileTinderSDK) KillServer() error {
-	url := fmt.Sprintf("http://localhost:%d/api/funcs/stop-server", config.DefaultPort)
+	url := fmt.Sprintf("http://localhost:%d/api/funcs/stop-server", filetinder.Config.Port)
 	_, err := req.Post(url)
 	if err != nil {
 		return err
