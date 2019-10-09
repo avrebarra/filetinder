@@ -1,5 +1,5 @@
 <div class="info">
-  <h1 class="name" align="center">🔥 filetinder</h1>
+  <h1 class="name" align="center">🔥<br>filetinder</h1>
 </div>
 
 
